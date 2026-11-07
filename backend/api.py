@@ -70,15 +70,31 @@ def report_incident(data: IncidentInput):
         raise HTTPException(status_code=500, detail=str(e))
 
     with connect() as db:
-        db.execute(
-            """INSERT INTO incidents
-            (incident_id, service, severity, description, remediation_plan,
-             status, created_at, updated_at)
-            VALUES (?, ?, ?, ?, ?, 'Open', ?, ?)""",
-            (incident_id, data.service, data.severity, data.description,
-             plan or "", now, now)
-        )
+        @app.on_event("startup")
+def initialize_database():
+    with connect() as db:
+        db.execute("""
+            CREATE TABLE IF NOT EXISTS incidents (
+                incident_id TEXT PRIMARY KEY,
+                service TEXT NOT NULL,
+                severity TEXT NOT NULL,
+                description TEXT NOT NULL,
+                remediation_plan TEXT,
+                status TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL
+            )
+        """)
 
+        db.execute("""
+            CREATE TABLE IF NOT EXISTS resolutions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                incident_id TEXT NOT NULL,
+                outcome TEXT NOT NULL,
+                details TEXT NOT NULL,
+                created_at TEXT NOT NULL
+            )
+        """)
     return {"incident_id": incident_id, "remediation_plan": plan,
             "status": "Open"}
 
