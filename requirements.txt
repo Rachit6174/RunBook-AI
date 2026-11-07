@@ -1,3 +1,5 @@
 hindsight-client
 python-dotenv
 requests
+fastapi
+uvicorn
