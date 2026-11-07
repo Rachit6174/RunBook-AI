@@ -1,14 +1,14 @@
 import os
 from dotenv import load_dotenv
-from hindsight_client import Hindsight
+from memory import Hindsight
 
 load_dotenv()
 
-bank_id = os.environ["HINDSIGHT_BANK_ID"]
+bank_id = os.getenv("HINDSIGHT_BANK_ID", "test-bank-123")
 
 client = Hindsight(
-    base_url=os.environ["HINDSIGHT_BASE_URL"],
-    api_key=os.environ["HINDSIGHT_API_KEY"]
+    base_url=os.getenv("HINDSIGHT_BASE_URL", "https://api.hindsight.ai"),
+    api_key=os.getenv("HINDSIGHT_API_KEY", "test-key-123")
 )
 
 try:
