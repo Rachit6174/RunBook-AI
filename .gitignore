@@ -1,5 +1,21 @@
+# Environment variables and secrets
 .env
+.env.*
+!.env.example
+
+# Python
 .venv/
+venv/
 __pycache__/
-*.pyc
+*.py[cod]
+.pytest_cache/
+.coverage
+
+# Frontend
+node_modules/
+dist/
+build/
+
+# IDE and OS
+.vscode/
 .DS_Store

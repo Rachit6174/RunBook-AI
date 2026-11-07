@@ -1,4 +1,4 @@
-from memory import (
+from backend.memory import (
     retain_incident,
     recall_similar_incidents,
     retain_resolution

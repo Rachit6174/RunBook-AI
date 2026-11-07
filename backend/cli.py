@@ -1,5 +1,5 @@
 import sys
-from agent import IncidentResponseAgent
+from .agent import IncidentResponseAgent
 
 def main():
     agent = IncidentResponseAgent()

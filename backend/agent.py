@@ -1,7 +1,7 @@
 import os
 import requests
 from dotenv import load_dotenv
-from memory import Hindsight
+from .memory import Hindsight
 
 load_dotenv()
 
@@ -58,6 +58,8 @@ Provide a concise, step-by-step remediation plan for this incident:
                 print(f"[Agent] Groq API Error: {response.text}")
         except Exception as e:
             print(f"[Agent] Error during execution: {e}")
+        finally:
+            self.memory.close()
 
 if __name__ == "__main__":
     agent = IncidentResponseAgent()

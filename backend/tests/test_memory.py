@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from memory import Hindsight
+from backend.memory import Hindsight
 
 load_dotenv()
 
