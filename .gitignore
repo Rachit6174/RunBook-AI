@@ -19,3 +19,7 @@ build/
 # IDE and OS
 .vscode/
 .DS_Store
+
+# Local data and backups
+*.db
+memory_backup.py
