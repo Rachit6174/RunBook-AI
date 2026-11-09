@@ -28,30 +28,34 @@ class Hindsight:
             name="RunBook AI Incident Memory"
         )
 
-    def retain(self, text, metadata=None):
-        return self.client.retain(
-            bank_id=self.bank_id,
-            content=text,
-            metadata=metadata or {}
-        )
+    def retain(self, text, metadata=None, tags=None):
+        kwargs = {
+            "bank_id": self.bank_id,
+            "content": text,
+            "metadata": metadata or {}
+        }
+        if tags:
+            kwargs["tags"] = tags
+        return self.client.retain(**kwargs)
 
-    def recall(self, query, limit=2):
-        result = self.client.recall(
-            bank_id=self.bank_id,
-            query=query
-        )
+    def recall(self, query, limit=2, tags=None):
+        kwargs = {
+            "bank_id": self.bank_id,
+            "query": query
+        }
+        if tags:
+            kwargs["tags"] = tags
+            kwargs["tags_match"] = "any_strict"
 
-        return SimpleNamespace(
-            results=result.results[:limit]
-        )
+        result = self.client.recall(**kwargs)
+        return SimpleNamespace(results=result.results[:limit])
 
     def track_resolution(self, incident_id, incident, status, resolution_details):
         if status not in ("resolved", "failed"):
             raise ValueError("Status must be 'resolved' or 'failed'")
-
         return self.retain(
             text=(
-                f"Resolution outcome for incident {incident_id}: "
+                f"User-recorded resolution for incident {incident_id}: "
                 f"{incident}. Status: {status}. "
                 f"Resolution details: {resolution_details}"
             ),
@@ -60,7 +64,8 @@ class Hindsight:
                 "resolution_status": str(status),
                 "resolution_details": str(resolution_details),
                 "record_type": "resolution"
-            }
+            },
+            tags=["resolution"]
         )
 
     def close(self):

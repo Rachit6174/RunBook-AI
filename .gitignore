@@ -1,25 +1,125 @@
-# Environment variables and secrets
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Python build and distribution
+.Python
+build/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Python testing and coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.cache/
+.hypothesis/
+nosetests.xml
+coverage.xml
+*.cover
+*.lcov
+cover/
+
+# Python environments
 .env
 .env.*
 !.env.example
-
-# Python
+.envrc
 .venv/
 venv/
-__pycache__/
-*.py[cod]
-.pytest_cache/
-.coverage
+env/
+ENV/
+env.bak/
+venv.bak/
+__pypackages__/
 
-# Frontend
-node_modules/
-dist/
-build/
+# Python tools
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+.ruff_cache/
+.pybuilder/
+.pdm-python
+.pdm-build/
+.pixi/
+.ipynb_checkpoints/
 
-# IDE and OS
-.vscode/
-.DS_Store
+# Local configuration and secrets
+.pypirc
+.streamlit/secrets.toml
+local_settings.py
+.abstra/
 
-# Local data and backups
+# Databases and local data
 *.db
-memory_backup.py
+*.sqlite
+*.sqlite3
+*.db-journal
+
+# Logs and temporary files
+*.log
+pip-log.txt
+pip-delete-this-directory.txt
+tempCodeRunnerFile.py
+*.pid
+
+# Redis and message brokers
+*.rdb
+*.aof
+celerybeat-schedule*
+mnesia/
+rabbitmq/
+rabbitmq-data/
+activemq-data/
+
+# Frontend dependencies
+node_modules/
+frontend/node_modules/
+
+# Frontend build output
+frontend/dist/
+dist/
+
+# JavaScript package secrets
+.npmrc
+
+# Editor settings
+.idea/
+.vscode/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Documentation build output
+docs/_build/
+site/
+
+# Jupyter and IPython
+profile_default/
+ipython_config.py
+
+# PyInstaller
+*.manifest
+*.spec
