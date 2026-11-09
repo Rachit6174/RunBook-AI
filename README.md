@@ -1,48 +1,155 @@
-# RunBook-AI
+# RunBook AI
 
-### AI-Powered Incident Response & Operational Learning Platform
+### An AI-powered incident response assistant with persistent operational memory
 
-RunBook-AI is an AI-powered incident management platform that helps engineering teams analyze production incidents, investigate logs and screenshots, generate remediation plans, and retain operational knowledge for future incidents.
+RunBook AI helps engineering teams understand production incidents, investigate possible root causes, and develop safer remediation plans using AI and persistent memory.
 
-It combines AI reasoning with persistent incident memory to help teams move beyond fixing individual incidents and build a continuously improving incident response system.
+Instead of treating every incident as an isolated event, RunBook AI uses **Hindsight memory** to retain relevant incident information, recall historical experiences, and reflect on previously recorded resolutions.
+
+The goal is to make incident response more context-aware, consistent, and human-controlled.
 
 ---
 
-## Features
+## 1. The Problem
 
-- **AI Incident Analysis:** Analyze incident descriptions and identify likely root causes.
-- **Multimodal Analysis:** Upload screenshots and log files for combined AI investigation.
-- **Automated Remediation Plans:** Generate structured investigation steps, mitigation actions, and corrective recommendations.
-- **Historical Incident Memory:** Retrieve relevant information from previous incidents using Hindsight.
-- **Incident Management:** Record incidents and track their status.
-- **Resolution Tracking:** Record incident resolutions for operational learning.
-- **Interactive Dashboard:** View incident information and operational insights.
-- **API Documentation:** Explore backend endpoints through FastAPI Swagger UI.
+Production incidents can be difficult to investigate because:
 
-## Technology Stack
+- Engineers must analyse logs, symptoms, and system behaviour under pressure.
+- Similar incidents may have occurred previously, but their resolutions are difficult to find.
+- Important operational knowledge can be lost between incidents or team members.
+- AI-generated remediation suggestions can be risky if executed without human review.
+
+Traditional AI assistants often lack persistent operational context.
+
+**RunBook AI addresses this problem by combining incident analysis, persistent memory, and human approval workflows.**
+
+## 2. Our Solution
+
+RunBook AI acts as an intelligent incident response assistant.
+
+It can:
+
+- Understand technical questions and incident descriptions.
+- Analyse incident symptoms and available evidence.
+- Identify relevant historical incidents using Hindsight.
+- Generate possible root-cause explanations.
+- Recommend remediation steps.
+- Maintain incident context across conversations.
+- Request human approval for potentially risky operations.
+
+RunBook AI is designed to assist engineers, not replace their judgement.
+
+## 3. Key Features
+
+| Feature | Description |
+|---|---|
+| Intelligent incident analysis | Analyses incident descriptions and available technical evidence |
+| Persistent memory | Retains useful incident information using Hindsight |
+| Historical incident recall | Retrieves relevant previous incidents and resolutions |
+| Context-aware recommendations | Uses historical experience to inform new recommendations |
+| Conversation continuity | Maintains incident context across interactions |
+| Human-in-the-loop safety | Requires human review and approval for risky actions |
+| Multimodal incident support | Supports incident evidence such as images and logs, where configured |
+
+## 4. Hindsight Integration
+
+Hindsight is a central part of RunBook AI.
+
+It provides persistent memory so the system can use information from previous incidents rather than relying exclusively on the current conversation.
+
+We use three important memory capabilities:
+
+### Retain
+
+Stores useful incident information, evidence, and user-recorded resolution details for future reference.
+
+### Recall
+
+Retrieves relevant historical memories when a new incident is analysed.
+
+### Reflect
+
+Produces higher-level insights from previously stored memories, helping the assistant identify potentially useful historical patterns.
+
+### Example: Persistent Incident Memory
+
+**First incident**
+
+An inventory API experiences HTTP 503 errors, database connection pool utilisation becomes unusually high, and requests begin timing out.
+
+RunBook AI analyses the incident and retains relevant information.
+
+**Resolution record**
+
+A user records that the connection pool configuration was reviewed and corrected.
+
+**Second incident**
+
+A similar inventory API incident occurs.
+
+RunBook AI can recall the previous incident and suggest investigating connection pool utilisation and configuration.
+
+The historical resolution is treated as a reference, not proof that the new incident has the same root cause.
+
+This demonstrates how Hindsight makes incident recommendations more context-aware.
+
+## 5. Safety and Human Approval
+
+RunBook AI follows a human-controlled approach to infrastructure operations.
+
+Its current implementation provides analysis and remediation recommendations; it does not independently execute infrastructure changes.
+
+For potentially dangerous operations:
+
+1. The assistant identifies the proposed action.
+2. It communicates the associated risk.
+3. It requests human approval.
+4. Approval decisions are recorded through the application's approval workflow.
+5. The system does not claim that an infrastructure action has been executed without actual execution evidence.
+
+**Important:** Giving permission in a conversation does not mean that a restart, rollback, deployment, or other infrastructure operation has actually occurred.
+
+This approach helps prevent misleading execution claims and unsafe automation.
+
+## 6. Technology Stack
 
 | Component | Technology |
 |---|---|
-| Frontend | React.js |
-| Build Tool | Vite |
-| Styling | CSS |
-| Charts | Recharts |
-| Icons | Lucide React |
+| Frontend | React |
+| Frontend tooling | Vite |
 | Backend | Python, FastAPI |
-| AI Reasoning | Groq |
-| Persistent Memory | Hindsight |
-| Database | SQLite |
+| AI model integration | Groq |
+| Persistent memory | Hindsight |
+| API communication | HTTP / REST |
+| Development environment | Python virtual environment and Node.js |
 
-## Project Structure
+## 7. Architecture
+
+```mermaid
+flowchart TD
+    A[User / Engineer] --> B[React Frontend]
+    B --> C[FastAPI Backend]
+    C --> D[Intent Understanding]
+    D --> E[Incident Analysis Agent]
+    E --> F[Hindsight Memory]
+    F --> G[Retain / Recall / Reflect]
+    G --> H[Context-Aware Recommendations]
+    H --> I[Human Review and Approval]
+    I --> J[Response to User]
+```
+
+Hindsight provides the persistent memory layer, while the backend manages intent understanding, incident analysis, and interaction with the frontend.
+
+## 8. Project Structure
 
 ```text
 RunBook-AI/
 │
 ├── backend/
-│   ├── api.py
 │   ├── agent.py
+│   ├── api.py
+│   ├── intent.py
 │   ├── memory.py
-│   ├── cli.py
 │   └── tests/
 │
 ├── frontend/
@@ -50,9 +157,9 @@ RunBook-AI/
 │   │   ├── App.jsx
 │   │   ├── main.jsx
 │   │   └── styles.css
-│   ├── .env.example
+│   ├── index.html
 │   ├── package.json
-│   └── package-lock.json
+│   └── vite.config.js
 │
 ├── .env.example
 ├── .gitignore
@@ -60,228 +167,140 @@ RunBook-AI/
 └── README.md
 ```
 
-## Prerequisites
+## 9. Installation and Setup
 
-Install the following before running the application:
+### Prerequisites
 
-- Python 3.11 recommended
-- Node.js and npm (Node.js 18 or later recommended)
-- Git
-- A Groq API key
+- Python 3.11 or compatible version
+- Node.js and npm
+- Groq API key
 - Hindsight API credentials
 
-You do not need VS Code. Any terminal and code editor will work.
-
-## Installation Guide
-
-### 1. Clone the repository
+### Step 1: Clone the repository
 
 ```bash
-git clone https://github.com/dibakar704/my_creation-.git
-cd my_creation-
+git clone https://github.com/Rachit6174/RunBook-AI.git
+cd RunBook-AI
 ```
 
-### 2. Set up the backend
-
-Create a Python virtual environment:
-
-**macOS / Linux**
+### Step 2: Set up the backend
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-```
-
-**Windows PowerShell**
-
-```powershell
-py -3.11 -m venv .venv
-.venv\Scripts\Activate.ps1
-```
-
-Install the Python dependencies:
-
-```bash
-python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### 3. Configure backend environment variables
+### Step 3: Configure environment variables
 
-Create a `.env` file in the main project directory.
+Create a `.env` file in the project root using `.env.example` as a template.
 
-Copy the contents of `.env.example` into it and enter your own credentials:
+Configure the following values:
 
 ```env
 GROQ_API_KEY=your_groq_api_key
 HINDSIGHT_API_KEY=your_hindsight_api_key
-HINDSIGHT_BANK_ID=your_hindsight_bank_id
-HINDSIGHT_BASE_URL=your_hindsight_api_url
+HINDSIGHT_BANK_ID=project_x
+HINDSIGHT_BASE_URL=your_hindsight_base_url
 ```
 
-Obtain your credentials from the respective service providers.
+Use the actual Hindsight endpoint and bank configuration supplied for your account.
 
-**Important:** Never commit or share your `.env` file. Every user must configure their own API credentials.
+Never commit your `.env` file or expose API keys publicly.
 
-### 4. Set up the frontend
+### Step 4: Start the backend
 
-Open another terminal and navigate to the frontend directory:
+```bash
+python3 -m uvicorn backend.api:app --reload --host 127.0.0.1 --port 8001
+```
+
+### Step 5: Set up the frontend
+
+Open another terminal:
 
 ```bash
 cd frontend
+npm install
 ```
 
-Install frontend dependencies:
+### Step 6: Start the frontend
 
 ```bash
-npm ci
+VITE_API_BASE_URL=http://127.0.0.1:8001 npm run dev -- --host 127.0.0.1 --port 5174
 ```
 
-Create the frontend environment file:
+Open:
 
-**macOS / Linux**
+http://127.0.0.1:5174
 
-```bash
-cp .env.example .env
-```
+## 10. Demonstration Scenarios
 
-**Windows PowerShell**
+We recommend demonstrating the following scenarios:
 
-```powershell
-Copy-Item .env.example .env
-```
+**Scenario 1 — Incident Analysis**
 
-The frontend `.env` should contain:
+Submit an inventory API incident with HTTP 503 errors and database connection pool pressure. Show the analysis and recommendations.
 
-```env
-VITE_API_BASE_URL=http://127.0.0.1:8000
-```
+**Scenario 2 — Hindsight Memory**
 
-This connects the frontend to the locally running backend.
+Record a resolution, then submit a related incident and demonstrate how historical memories are recalled.
 
-## Running the Application
+**Scenario 3 — Human Approval**
 
-Run both services in separate terminals.
+Ask RunBook AI to perform a high-risk infrastructure operation. Demonstrate that it requests approval and clearly reports that execution has not occurred.
 
-### Terminal 1 — Backend
+**Scenario 4 — Conversation Continuity**
 
-From the main project directory:
+Continue an existing incident conversation and demonstrate how the assistant maintains its context.
 
-```bash
-source .venv/bin/activate
-python -m uvicorn backend.api:app --reload
-```
+## 11. Band AI Desktop Usage
 
-On Windows PowerShell, activate the environment using:
+Band AI Desktop was used during the development workflow of RunBook AI.
 
-```powershell
-.venv\Scripts\Activate.ps1
-```
+We used its agent and room-based task assignment features to delegate project-related tasks to AI agents.
 
-Then run the same Uvicorn command.
+Our workflow included:
 
-Backend:
+- Configuring AI agents.
+- Creating a dedicated RunBook AI workspace room.
+- Assigning project analysis tasks to RunBook AI Builder.
+- Reviewing agent interactions and task activity.
 
-http://127.0.0.1:8000
+Band AI Desktop was used as a development coordination environment. It is not claimed as a runtime dependency of the RunBook AI application.
 
-API documentation:
+## 12. Hackathon Deliverables
 
-http://127.0.0.1:8000/docs
+| Deliverable | Link |
+|---|---|
+| GitHub repository | https://github.com/Rachit6174/RunBook-AI |
+| Demo video | Add demo video URL |
+| Live demonstration | Add deployment URL, if available |
+| Technical article | Add article URL |
+| Social media post | Add post URL |
 
-### Terminal 2 — Frontend
+## 13. Future Improvements
 
-From the main project directory:
+- Integration with real infrastructure monitoring systems.
+- More advanced log and trace analysis.
+- Improved incident classification.
+- Stronger evaluation of historical memory relevance.
+- Auditable approval and execution integrations.
+- Support for additional observability platforms.
+- Automated testing across more incident scenarios.
 
-```bash
-cd frontend
-npm run dev
-```
+## 14. Team
 
-Open the application:
+**Project:** RunBook AI  
+**Hackathon:** Hack With Bangalore 4.0
 
-http://localhost:5173
-
-Your RunBook-AI application is now running locally.
-
-## API Endpoints
-
-| Method | Endpoint | Purpose |
-|---|---|---|
-| GET | `/` | Backend welcome endpoint |
-| GET | `/health` | Health check |
-| POST | `/incidents` | Create and analyze an incident |
-| POST | `/incidents/multimodal` | Analyze an incident with uploaded files |
-| POST | `/incidents/{incident_id}/resolution` | Record an incident resolution |
-
-Explore the interactive API documentation at `/docs`.
-
-## Example Incident
-
-**Incident description:**
-
-```text
-Checkout API is returning 503 errors after Redis
-connection failures and worker crashes.
-```
-
-RunBook-AI can analyze the incident, examine uploaded screenshots and logs, identify potential root causes, and generate a structured remediation plan.
-
-## Troubleshooting
-
-**Backend fails to start**
-
-- Confirm Python 3.11 is installed.
-- Activate the virtual environment.
-- Install dependencies again using `pip install -r requirements.txt`.
-- Check that your backend `.env` is configured.
-
-**Frontend fails to start**
-
-- Confirm Node.js and npm are installed.
-- Run `npm ci` inside the frontend directory.
-- Check the frontend `.env` configuration.
-
-**Frontend cannot connect to backend**
-
-- Confirm the backend is running on port 8000.
-- Verify `VITE_API_BASE_URL`.
-- Restart the Vite development server after changing environment variables.
-
-**AI analysis fails**
-
-- Verify your Groq API key.
-- Verify your Hindsight credentials and service configuration.
-- Check the backend terminal for the detailed error.
-
-## Security
-
-- API credentials must remain in local environment files.
-- `.env` files are excluded through `.gitignore`.
-- Never publish private API keys or database credentials.
-- Each installation should use its own service credentials.
-
-## Current Deployment Model
-
-RunBook-AI currently supports local development and execution.
-
-Each user runs the backend and frontend on their own machine and supplies their own API credentials.
-
-A public hosted deployment requires separately configured hosting and production environment variables.
-
-## Contributing
-
-Contributions, bug reports, and feature suggestions are welcome.
-
-1. Fork the repository.
-2. Create a feature branch.
-3. Make your changes.
-4. Test your changes.
-5. Submit a pull request.
-
-## License
-
-Add a license before distributing the project for reuse. Until a license is added, the repository's default copyright protections apply.
+Add the names, roles, and GitHub profiles of all team members here.
 
 ---
 
-**RunBook-AI — Turning incidents into intelligence.**
+## Conclusion
+
+RunBook AI aims to make incident response smarter by combining AI-powered investigation with persistent operational memory.
+
+By using Hindsight to retain, recall, and reflect on previous incidents, RunBook AI can provide more context-aware recommendations while keeping important operational decisions under human control.
+
+**Remember the incident. Learn from the past. Respond more intelligently.**
